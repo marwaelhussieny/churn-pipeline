@@ -1,0 +1,11 @@
+aws_region     = "us-east-1"
+namespace_name = "churn-pipeline"
+workgroup_name = "churn-pipeline-wg"
+db_name        = "churn"
+admin_username = "churn_admin"
+
+# Get your IP with: curl -s ifconfig.me
+allowed_cidr = "YOUR_IP_HERE/32"
+
+# Don't put the password here - export it instead:
+#   export TF_VAR_admin_password="your-strong-password-here"

@@ -1,0 +1,24 @@
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/terraform.tfvars
+terraform/.terraform.lock.hcl
+
+.env
+*.pem
+
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+**/.pytest_cache/
+.venv/
+venv/
+
+# MLflow local tracking artifacts - regenerate by running train.py,
+# don't commit a real model to git
+src/mlflow.db
+src/mlruns/
+
+logs/
+*.log

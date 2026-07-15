@@ -1,0 +1,14 @@
+# Core pipeline dependencies (ingestion + training).
+# Dagster is installed separately to avoid dependency conflicts, same
+# pattern as the other projects in this portfolio.
+mlflow>=2.12
+scikit-learn>=1.4
+pandas>=2.2
+numpy>=1.26
+psycopg2-binary>=2.9
+pytest>=8.0
+fastapi>=0.110
+uvicorn[standard]>=0.29
+redis>=5.0
+prometheus-fastapi-instrumentator>=7.0
+httpx>=0.27
