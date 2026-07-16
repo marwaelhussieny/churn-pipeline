@@ -203,6 +203,50 @@ terraform destroy
 - A/B testing between model versions via MLflow's model stage transitions
 - Grafana alerting rules on prediction latency and error rate
 
+## Issues Encountered & Fixes
+
+Two real bugs found and fixed during development, not simulated for this README:
+
+<details>
+<summary><strong>1. FastAPI's model-loading startup hook never fired</strong></summary>
+
+**Symptom:** `/health` returned `model_loaded: false` even though the
+startup code looked correct.
+
+**Cause:** `@app.on_event("startup")` is a deprecated FastAPI API, and it
+doesn't reliably fire in some contexts - including when `TestClient` is
+used without a `with` context manager, which is exactly how it was first
+tested.
+
+**Fix:** switched to the modern `lifespan` context manager pattern, which
+fires reliably regardless of how the app is instantiated or tested.
+</details>
+
+<details>
+<summary><strong>2. Silent wrong predictions: the scaler was never applied</strong></summary>
+
+**This is the more serious one.** The model was trained on
+`StandardScaler`-scaled features, and the scaler was dutifully logged to
+MLflow as a separate artifact - but the serving code never actually
+*loaded or applied* it before calling `predict_proba()`. The API didn't
+error. It just silently returned wrong predictions on unscaled data.
+
+**How it was caught:** not by a crash, but by testing two deliberately
+distinct customer profiles - one classic high-churn-risk (new customer,
+month-to-month, fiber optic, no add-ons) and one classic low-risk (60-month
+tenure, two-year contract, many add-ons) - and noticing the predicted
+probabilities didn't move in the direction they obviously should have.
+
+**Fix:** loaded the scaler from the same MLflow run as the model, and
+applied `scaler.transform(X)` before every prediction. After the fix, the
+high-risk profile scored 52.8% churn probability and the low-risk profile
+scored 2.5% - the model finally behaved the way the data says it should.
+
+**The lesson:** a model that runs without erroring is not the same as a
+model that's correct. This one needed a *behavioral* sanity check, not
+just a successful HTTP response, to catch it.
+</details>
+
 ---
 *Part of a modernized 10-project data engineering portfolio, upgrading the
 original brief from [garage-education/data-engineering-projects](https://github.com/garage-education/data-engineering-projects).*
