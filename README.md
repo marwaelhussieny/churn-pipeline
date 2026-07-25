@@ -50,37 +50,8 @@ missing an at-risk customer is more costly than a false alarm.)
 
 ## Architecture
 
-*(Diagram generated separately - see the prompt below if you want to
-regenerate or adapt it.)*
-
 ![Pipeline architecture](docs/architecture.png)
 
-<details>
-<summary>Prompt used to generate the architecture diagram</summary>
-
-```
-Create a clean, professional MLOps architecture diagram in a flat modern
-tech-illustration style (like official AWS architecture diagrams).
-Horizontal left-to-right flow on a white or light gray background.
-
-Components, left to right:
-1. A spreadsheet/CSV icon labeled "Telco Churn CSV" (7,043 real customers)
-2. An arrow into a database icon labeled "AWS Redshift Serverless" (subtitle: raw warehouse)
-3. An arrow into a box labeled "Feature Engineering" (subtitle: Python/pandas)
-4. An arrow into a box labeled "MLflow" with the MLflow logo (subtitle: training, tracking, model registry)
-5. An arrow from MLflow into a box labeled "FastAPI" with the FastAPI logo (subtitle: /predict endpoint)
-6. A small database/cache icon labeled "Redis" connected to the FastAPI box with a bidirectional arrow (subtitle: prediction cache)
-7. An arrow from FastAPI upward into a box labeled "Prometheus" with the Prometheus logo, which itself connects to a "Grafana" box with the Grafana logo, both representing the monitoring layer sitting above the API
-
-Wrap the Feature Engineering and MLflow boxes in a dashed rounded rectangle
-labeled "Dagster - weekly retrain schedule" with the Dagster logo near the label.
-
-Use a professional color palette: gray/tan for the raw source and warehouse,
-teal for feature engineering, purple for MLflow (to stand out as the model
-layer), blue for FastAPI, red/orange for Redis, and orange for the
-Prometheus/Grafana monitoring boxes. Clean sans-serif typography, minimal
-shadows, suitable as a GitHub README hero image.
-```
 
 </details>
 
